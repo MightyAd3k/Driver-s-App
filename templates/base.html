@@ -15,7 +15,7 @@
     <a class="active" href="{% url 'index' %}">Home</a>
 {#    <a href="{% url 'authors' %}">Authors</a>#}
 {#    <a href="{% url 'books' %}">Books</a>#}
-
+    <a href="{% url 'add_driver' %}">Add Driver</a>
 {#    {% if perms.bib_app.add_book %}#}
 {#        <a href="{% url 'add_author' %}">Add Author</a>#}
 {#        <a href="{% url 'add_book' %}">Add Book</a>#}
@@ -32,10 +32,10 @@
 
 </div>
 <div class="contener">
-{#    {% block content %}#}
+    {% block content %}
 {#        <p id="user">Logged as: {{ user }}</p>#}
 {#        <p id="text">Witaj wędrowcze!</p>#}
-{#    {% endblock %}#}
+    {% endblock %}
 </div>
 {#<div class="footer">#}
 {#    {{ date }}#}

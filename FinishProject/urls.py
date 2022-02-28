@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from reservation.views import Index
+from reservation import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', Index.as_view(), name='index')
+    path('', views.Index.as_view(), name='index'),
+    path('add_driver/', views.AddDriver.as_view(), name='add_driver'),
+    path('drivers/', views.DriversList.as_view(), name='drivers'),
 ]

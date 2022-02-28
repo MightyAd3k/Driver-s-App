@@ -16,6 +16,9 @@ class Driver(models.Model):
     surname = models.CharField(max_length=12)
     nationality = models.CharField(max_length=3)
 
+    def __str__(self):
+        return f'{self.name} {self.surname} {self.nationality}'
+
 
 class Vehicle(models.Model):
     type = models.CharField(max_length=5, choices=vehicle_types)
