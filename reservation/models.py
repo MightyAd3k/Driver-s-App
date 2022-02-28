@@ -18,13 +18,13 @@ class Driver(models.Model):
 
 
 class Vehicle(models.Model):
-    type = models.CharField(choices=vehicle_types)
+    type = models.CharField(max_length=5, choices=vehicle_types)
     license_place = models.CharField(max_length=10)
     driver_name = models.OneToOneField(Driver, on_delete=models.CASCADE)
 
 
 class Parking(models.Model):
-    type = models.CharField(choices=parking_types)
+    type = models.CharField(max_length=6, choices=parking_types)
     number_of_places = models.IntegerField()
 
 
