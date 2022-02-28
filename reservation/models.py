@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 vehicle_types = (
     (1, 'car'),
@@ -18,6 +19,9 @@ class Driver(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.surname} {self.nationality}'
+
+    def get_absolute_url(self):
+        return reverse('detail_driver', args=(self.pk, ))
 
 
 class Vehicle(models.Model):

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <p>Name: {{ object.name }}</p>
+    <p>Surname: {{ object.surname }}</p>
+    <p>Nationality: {{ object.nationality }}</p>
+
+    <a href="{{ object.get_absolute_url }}delete" {{ object }}>Delete Driver</a>
+    <a href="{{ object.get_absolute_url }}update" {{ object }}>Edit data</a>
+
+{% endblock %}

@@ -22,5 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.Index.as_view(), name='index'),
     path('add_driver/', views.AddDriver.as_view(), name='add_driver'),
+    path('driver/<int:pk>/', views.DetailsDriver.as_view(), name='detail_driver'),
+    path('driver/<int:pk>/update/', views.UpdateDriver.as_view(), name='update'),
+    path('driver/<int:pk>/delete/', views.DeleteDriver.as_view(), name='delete'),
     path('drivers/', views.DriversList.as_view(), name='drivers'),
 ]
