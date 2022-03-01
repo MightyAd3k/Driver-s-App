@@ -35,12 +35,28 @@ class DeleteDriver(DeleteView):
     template_name = 'form.html'
     success_url = reverse_lazy('drivers')
 
+    # def get_queryset(self):
+    #     nationality = self.request.GET.get('nationality')
+    #     drivers = models.Driver.objects.all()
+    #     if nationality is not None:
+    #         drivers = drivers.filter(nationality=nationality)
+    #     return drivers
+
 
 class DriversList(View):
     def get(self, request):
+        nationality = request.GET.get('nationality')
         drivers = models.Driver.objects.all()
+        if nationality is not None:
+            drivers = drivers.filter(nationality=nationality)
         context = {'drivers': drivers}
         return render(request, 'drivers.html', context)
+
+    def post(self, request):
+        nationality = request.POST['nationality']
+        drivers = models.Driver.objects.filter(nationality=nationality)
+        context = {'drivers': drivers}
+        return render(request, 'drivers1.html', context)
 
 
 class AddVehicle(CreateView):
