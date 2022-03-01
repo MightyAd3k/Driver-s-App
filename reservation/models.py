@@ -25,9 +25,15 @@ class Driver(models.Model):
 
 
 class Vehicle(models.Model):
-    type = models.CharField(max_length=5, choices=vehicle_types)
+    type = models.IntegerField(choices=vehicle_types)
     license_place = models.CharField(max_length=10)
     driver_name = models.OneToOneField(Driver, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.type} {self.license_place} {self.driver_name}'
+
+    def get_absolute_url(self):
+        return reverse('detail_vehicle', args=(self.pk, ))
 
 
 class Parking(models.Model):
