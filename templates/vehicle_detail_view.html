@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <p>Type: {{ object.type }}</p>
+    <p>License Plate: {{ object.license_plate }}</p>
+    <p>Driver's name: {{ object.driver_name }}</p>
+
+    <a href="{{ object.get_absolute_url }}delete" {{ object }}>Delete Vehicle</a>
+    <a href="{{ object.get_absolute_url }}update" {{ object }}>Edit data</a>
+
+{% endblock %}
