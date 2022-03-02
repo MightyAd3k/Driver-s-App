@@ -9,13 +9,18 @@ class LoginForm(forms.Form):
 
 
 def pass_length_validation(value):
-    if len(value) < 6:
-        return ValidationError('Password is too short')
+    if len(value) < 8:
+        raise ValidationError('Password is too short')
 
 
 class CreateUserForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(), validators=[pass_length_validation])
-    password1 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(), validators=[pass_length_validation])
+    password = forms.CharField(label='Password',
+                               widget=forms.PasswordInput(),
+                               validators=[pass_length_validation])
+
+    password1 = forms.CharField(label='Repeat password',
+                                widget=forms.PasswordInput(),
+                                validators=[pass_length_validation])
 
     class Meta:
         model = User
@@ -34,6 +39,6 @@ class CreateUserForm(forms.ModelForm):
 
     def clean(self):
         data = super().clean()
-        if data['password'] is not None and data['password'] != data['password1']:
+        if data.get('password') is not None and data.get('password') != data.get('password1'):
             raise ValidationError('Passwords are different')
         return data
