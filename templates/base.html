@@ -32,10 +32,14 @@
 </div>
 <div class="contener">
     {% block content %}
-        {% if user.is_superuser %}
-            <p id="user" style="color: crimson">Logged as: {{ user }}</p>
+        {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+                <p id="user" style="color: crimson">Logged as: {{ user }}</p>
+            {% else %}
+                <p id="user">Logged as: {{ user }}</p>
+            {% endif %}
         {% else %}
-            <p id="user">Logged as: {{ user }}</p>
+            <p id="user">Who are y'a?</p>
         {% endif %}
         <p id="text">Welcome to my app!</p>
     {% endblock %}

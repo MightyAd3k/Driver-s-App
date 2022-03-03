@@ -32,7 +32,7 @@ class UpdateDriver(UpdateView):
 
 class DeleteDriver(DeleteView):
     model = models.Driver
-    template_name = 'form.html'
+    template_name = 'delete.html'
     success_url = reverse_lazy('drivers')
 
     # def get_queryset(self):
@@ -79,7 +79,7 @@ class UpdateVehicle(UpdateView):
 
 class DeleteVehicle(DeleteView):
     model = models.Vehicle
-    template_name = 'form.html'
+    template_name = 'delete.html'
     success_url = reverse_lazy('vehicles')
 
 
