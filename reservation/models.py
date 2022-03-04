@@ -2,13 +2,13 @@ from django.db import models
 from django.urls import reverse
 
 vehicle_types = (
-    (1, 'car'),
-    (2, 'truck')
+    ('car', 'Car'),
+    ('truck', 'Truck')
 )
 
 parking_types = (
-    (1, 'cars'),
-    (2, 'trucks')
+    ('cars', 'Cars'),
+    ('trucks', 'Trucks')
 )
 
 
@@ -25,20 +25,26 @@ class Driver(models.Model):
 
 
 class Vehicle(models.Model):
-    type = models.IntegerField(choices=vehicle_types)
+    type = models.CharField('Type of the vehicle', max_length=5, choices=vehicle_types)
     license_place = models.CharField(max_length=10)
     driver_name = models.OneToOneField(Driver, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.type} {self.license_place} {self.driver_name}'
+        return f'{self.get_type_display()} {self.license_place} {self.driver_name}'
 
     def get_absolute_url(self):
         return reverse('detail_vehicle', args=(self.pk, ))
 
 
 class Parking(models.Model):
-    type = models.CharField(max_length=6, choices=parking_types)
+    type = models.CharField('Type of the parking', max_length=6, choices=parking_types)
     number_of_places = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.get_type_display()} {self.number_of_places}'
+
+    def get_absolute_url(self):
+        return reverse('detail_parking', args=(self.pk, ))
 
 
 class ParkingPlace(models.Model):

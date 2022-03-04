@@ -1,15 +1,25 @@
 from django import forms
 
-from reservation import models
+from reservation.models import (
+    Driver,
+    Vehicle,
+    Parking
+)
 
 
 class DriverModelForm(forms.ModelForm):
     class Meta:
-        model = models.Driver
+        model = Driver
         fields = '__all__'
 
 
 class VehicleModelForm(forms.ModelForm):
     class Meta:
-        model = models.Vehicle
+        model = Vehicle
+        fields = '__all__'
+
+
+class ParkingModelForm(forms.ModelForm):
+    class Meta:
+        model = Parking
         fields = '__all__'

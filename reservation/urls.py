@@ -15,4 +15,10 @@ urlpatterns = [
     path('vehicle/<int:pk>/', views.DetailsVehicle.as_view(), name='detail_vehicle'),
     path('vehicle/<int:pk>/update/', views.UpdateVehicle.as_view(), name='update'),
     path('vehicle/<int:pk>/delete/', views.DeleteVehicle.as_view(), name='delete'),
+    # Parking urls
+    path('add_parking/', views.AddParking.as_view(), name='add_parking'),
+    path('parkings/', views.ParkingsList.as_view(), name='parkings'),
+    path('parking/<int:pk>/', views.DetailsParking.as_view(), name='detail_parking'),
+    path('parking/<int:pk>/update/', views.UpdateParking.as_view(), name='update'),
+    path('parking/<int:pk>/delete/', views.DeleteParking.as_view(), name='delete'),
 ]
