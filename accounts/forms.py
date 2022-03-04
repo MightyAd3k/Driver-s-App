@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+import re
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username')
@@ -13,10 +15,34 @@ def pass_length_validation(value):
         raise ValidationError('Password is too short')
 
 
+def pass_lower_case_validation(value):
+    if re.search('[a-z]', value) is None:
+        raise ValidationError('Password must contains at least one lowercase character')
+
+
+def pass_upper_case_validation(value):
+    if re.search('[A-Z]', value) is None:
+        raise ValidationError('Password must contains at least one uppercase character')
+
+
+def pass_number_validation(value):
+    if re.search('[0-9]', value) is None:
+        raise ValidationError('Password must contains at least one number')
+
+
+def pass_special_sign_validation(value):
+    if re.search('[^A-Za-z0-9]', value) is None:
+        raise ValidationError('Password must contains at least one special symbol')
+
+
 class CreateUserForm(forms.ModelForm):
     password = forms.CharField(label='Password',
                                widget=forms.PasswordInput(),
-                               validators=[pass_length_validation])
+                               validators=[pass_length_validation,
+                                           pass_special_sign_validation,
+                                           pass_lower_case_validation,
+                                           pass_upper_case_validation,
+                                           pass_number_validation])
 
     password1 = forms.CharField(label='Repeat password',
                                 widget=forms.PasswordInput(),
