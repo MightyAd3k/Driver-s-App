@@ -11,7 +11,7 @@
 {% csrf_token %}
     {% include 'list_view.html' with objects_list=drivers %}
 <select name="nationality">
-    {% for object in drivers %}
+    {% for object in unique_nationalities %}
         <option>{{ object.nationality }}</option>
     {% endfor %}
 </select>

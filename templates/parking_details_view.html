@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <p>Type: {{ object.type }}</p>
-    <p>Number of places: {{ object.number_of_places }}</p>
-
+    <a href="{{ object.get_absolute_url }}reserve" {{ object }}>Reserve a place</a> |
+    <a href="{{ object.get_absolute_url }}update" {{ object }}>Edit data</a> |
     <a href="{{ object.get_absolute_url }}delete" {{ object }}>Delete Parking</a>
-    <a href="{{ object.get_absolute_url }}update" {{ object }}>Edit data</a>
+
+    <p>Address: {{ object.address }}</p>
+    <p>Parking for - {{ object.type }}</p>
+    <p>Number of places: {{ object.number_of_places }}</p>
 
 {% endblock %}
