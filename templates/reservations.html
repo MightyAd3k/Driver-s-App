@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reservations</title>
+    </head>
+    <body>
+    <table>
+        <tbody>
+        <tr>
+            <th>Start day</th>
+            <th>Start hour</th>
+            <th>End day</th>
+            <th>End hour</th>
+            <th>Driver</th>
+            <th>Place</th>
+            <th>Address</th>
+        </tr>
+        {% for object in reservations %}
+            <tr>
+                <td>{{ object.from_day }}</td>
+                <td>{{ object.from_hour }}</td>
+                <td>{{ object.to_day }}</td>
+                <td>{{ object.to_hour }}</td>
+                <td>{{ object.driver }}</td>
+                <td>{{ object.parking_place }}</td>
+                <td>{{ object.parking_place.parking.address}}</td>
+                <td><a href="/reservation/{{ object.id }}/delete/">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </body>
+    </html>
+{% endblock %}
