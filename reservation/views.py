@@ -1,21 +1,24 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, ListView
+from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 
 from reservation.models import (
     Driver,
     Vehicle,
     Parking,
-    ParkingReservation
+    ParkingPlace, ParkingReservation
 )
 from reservation.forms import DriverModelForm, VehicleModelForm, ParkingModelForm, ReservationModelForm
 from reservation.models import parking_types
 
 
 class Index(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return render(request, 'base.html')
 
 
@@ -25,13 +28,6 @@ class AddDriver(LoginRequiredMixin, CreateView):
     form_class = DriverModelForm
     template_name = 'form.html'
     success_url = reverse_lazy('drivers')
-
-    # def get_context_data(self, **kwargs):
-    #     nationalities = []
-    #     nationality = Driver.objects.get('nationality')
-    #     if nationality not in nationalities:
-    #         nationalities.append(nationality)
-    #     return nationalities
 
 
 class DetailsDriver(DetailView):
@@ -52,19 +48,28 @@ class DeleteDriver(LoginRequiredMixin, DeleteView):
 
 
 class DriversList(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         nationality = request.GET.get('nationality')
         drivers = Driver.objects.all().order_by('nationality')
+
         if nationality is not None:
             drivers = drivers.filter(nationality=nationality)
+
         unique_nationalities = Driver.objects.all().values('nationality').distinct()
-        context = {'drivers': drivers, 'unique_nationalities': unique_nationalities}
+        context = {
+            'drivers': drivers,
+            'unique_nationalities': unique_nationalities
+        }
         return render(request, 'driver_list.html', context)
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         nationality = request.POST['nationality']
         drivers = Driver.objects.filter(nationality=nationality).order_by('name')
-        context = {'drivers': drivers}
+        context = {
+            'drivers': drivers
+        }
         return render(request, 'drivers1.html', context)
 
 
@@ -94,9 +99,12 @@ class DeleteVehicle(LoginRequiredMixin, DeleteView):
 
 
 class VehiclesList(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         vehicles = Vehicle.objects.all()
-        context = {'vehicles': vehicles}
+        context = {
+            'vehicles': vehicles
+        }
         return render(request, 'vehicles.html', context)
 
 
@@ -126,7 +134,8 @@ class DeleteParking(LoginRequiredMixin, DeleteView):
 
 
 class ParkingsList(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         parkings = Parking.objects.all()
         context = {
             'parkings': parkings,
@@ -136,13 +145,15 @@ class ParkingsList(View):
 
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class AddParkingReservation(View):
-    # model = ParkingReservation
-    # form_class = ReservationModelForm
-    # template_name = 'form.html'
-    # success_url = reverse_lazy('detail_parking')
+def get_first_parking_place(parking):
+    parking_place = ParkingPlace.objects.filter(is_free=True, parking=parking)
 
-    def get(self, request, parking_id):
+    return parking_place.first()
+
+
+class AddParkingReservation(LoginRequiredMixin, View):
+    @staticmethod
+    def get(request, parking_id):
         form = ReservationModelForm()
         parking = Parking.objects.get(id=parking_id)
         context = {
@@ -151,11 +162,56 @@ class AddParkingReservation(View):
         }
         return render(request, 'form.html', context)
 
-    # def post(self, request, parking_id):
-    #     form = ReservationModelForm(request.POST)
-    #     if form.is_valid():
-    #         reservation = form.save(commit=False)
-    #         reservation.parking_place = get_fst_pp()
-    #         reservation.driver = request.user.driver
-    #         reservation.save()
-    #     return ....
+    @staticmethod
+    def post(request, parking_id):
+        form = ReservationModelForm(request.POST)
+        parking = Parking.objects.get(id=parking_id)
+
+        if parking.free_places < 1:
+            return HttpResponse("We're sorry, there are no more free places available.")
+
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.parking_place = get_first_parking_place(parking)
+            reservation.parking_place.is_free = False
+            reservation.parking_place.save()
+            reservation.save()
+            parking.add_reservation()
+
+            return redirect('/reservation/reservations/')
+
+        context = {
+            'form': form,
+            'parking': parking
+        }
+        return render(request, 'form.html', context)
+
+
+class ReservationsList(View):
+    @staticmethod
+    def get(request):
+        reservations = ParkingReservation.objects.all()
+        context = {
+            'reservations': reservations
+        }
+        return render(request, 'reservations.html', context)
+
+
+class DeleteReservation(View):
+    @staticmethod
+    def get(request, reservation_id):
+        reservation = ParkingReservation.objects.get(id=reservation_id)
+        context = {
+            'reservation': reservation
+        }
+        return render(request, 'delete_reservation.html', context)
+
+    @staticmethod
+    def post(request, reservation_id):
+        reservation = ParkingReservation.objects.get(id=reservation_id)
+        reservation.parking_place.is_free = True
+        reservation.parking_place.save()
+        reservation.parking_place.parking.delete_reservation()
+        reservation.delete()
+
+        return redirect('/reservation/reservations/')

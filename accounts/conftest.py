@@ -12,6 +12,6 @@ def client():
 @pytest.fixture
 def new_user():
     user = User.objects.create(username='Janusz')
-    user.set_password('asd123')
+    user.set_password('silneHaslo!2')
     user.save()
     return user

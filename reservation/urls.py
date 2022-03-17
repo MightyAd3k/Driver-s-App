@@ -22,5 +22,7 @@ urlpatterns = [
     path('parking/<int:pk>/update/', views.UpdateParking.as_view(), name='update'),
     path('parking/<int:pk>/delete/', views.DeleteParking.as_view(), name='delete'),
     # Reservation urls
-    path('parking/<int:parking_id>/reserve/', views.AddParkingReservation.as_view(), name='add_reservation')
+    path('parking/<int:parking_id>/reserve/', views.AddParkingReservation.as_view(), name='add_reservation'),
+    path('reservations/', views.ReservationsList.as_view(), name='reservations'),
+    path('<int:reservation_id>/delete/', views.DeleteReservation.as_view(), name='delete')
 ]

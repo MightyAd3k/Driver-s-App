@@ -37,6 +37,8 @@ def pass_special_sign_validation(value):
 
 class CreateUserForm(forms.ModelForm):
     password = forms.CharField(label='Password',
+                               help_text=('Required at least: one big letter, small letter, number '
+                                          'and one special sign: ! @ # $ % ^ & * ( ) ? - _ /'),
                                widget=forms.PasswordInput(),
                                validators=[pass_length_validation,
                                            pass_special_sign_validation,

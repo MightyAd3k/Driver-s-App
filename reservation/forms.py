@@ -1,12 +1,9 @@
-from datetime import datetime
-
 from django import forms
-from django.contrib.admin.widgets import AdminSplitDateTime
-
 from reservation.models import (
     Driver,
     Vehicle,
-    Parking, ParkingReservation
+    Parking,
+    ParkingReservation
 )
 
 
@@ -28,17 +25,13 @@ class ParkingModelForm(forms.ModelForm):
         fields = '__all__'
 
 
-# class ParkingPlaceModelForm(forms.ModelForm):
-#     class Meta:
-#         model = ParkingPlace
-#         fields = '__all__'
-
-
 class ReservationModelForm(forms.ModelForm):
     class Meta:
         model = ParkingReservation
-        fields = ['occupied_from', 'occupied_to']
+        exclude = ['parking_place']
         widgets = {
-            'occupied_from': AdminSplitDateTime(),
-            'occupied_to': AdminSplitDateTime()
+            'from_day': forms.SelectDateWidget(),
+            'from_hour': forms.TimeInput(attrs={'type': 'time'}, format='%H:%M'),
+            'to_day': forms.SelectDateWidget(),
+            'to_hour': forms.TimeInput(attrs={'type': 'time'}),
         }
