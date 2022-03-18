@@ -40,8 +40,8 @@ class CreateUserView(CreateView):
     template_name = 'form.html'
     success_url = reverse_lazy('register_new_user')
 
-    # def form_valid(self, form):
-    #     retrieved_value = super().form_valid(form)
-    #     self.object.set_password(form.cleaned_data['password'])
-    #     self.object.save()
-    #     return retrieved_value
+    def form_valid(self, form):
+        retrieved_value = super().form_valid(form)
+        self.object.set_password(form.cleaned_data['password'])
+        self.object.save()
+        return retrieved_value

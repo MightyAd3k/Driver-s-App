@@ -168,7 +168,7 @@ class AddParkingReservation(LoginRequiredMixin, View):
         parking = Parking.objects.get(id=parking_id)
 
         if parking.free_places < 1:
-            return HttpResponse("We're sorry, there are no more free places available.")
+            return HttpResponse("We're sorry, there is no more free places available.")
 
         if form.is_valid():
             reservation = form.save(commit=False)
@@ -190,7 +190,7 @@ class AddParkingReservation(LoginRequiredMixin, View):
 class ReservationsList(View):
     @staticmethod
     def get(request):
-        reservations = ParkingReservation.objects.all()
+        reservations = ParkingReservation.objects.all().order_by('from_day')
         context = {
             'reservations': reservations
         }
