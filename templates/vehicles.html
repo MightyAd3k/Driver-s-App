@@ -7,7 +7,24 @@
     <title>Vehicles</title>
 </head>
 <body>
-{% include 'list_view.html' with objects_list=vehicles %}
+<table>
+    <tbody>
+    <tr>
+        <th>Type of the vehicle</th>
+        <th>Plate number</th>
+        <th>Driver</th>
+        <th>Driver's nationality</th>
+    </tr>
+        {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ vehicle.type }}</td>
+                <td>{{ vehicle.license_plate }}</td>
+                <td>{{ vehicle.driver_name.name }} {{ vehicle.driver_name.surname }}</td>
+                <td>{{ vehicle.driver_name.nationality }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>
 {% endblock %}

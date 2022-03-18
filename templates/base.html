@@ -34,7 +34,7 @@
 </div>
 <div class="contener">
     {% block content %}
-        <div style="text-align: center">
+        <div id="promyczek">
             <h3 id="text">Welcome to my app!</h3><br>
             {% if not user.is_authenticated %}
                 <p>If you are new user please create a new account.</p>
@@ -50,7 +50,8 @@
     {% endblock %}
 </div>
 <div class="footer">
-    {{ date }}
+    <p>{{ date }}</p>
+    <p>Created by:<a href="https://github.com/MightyAd3k">Adrian Drewniak</a>, junior python developer.</p>
 </div>
 </body>
 </html>
