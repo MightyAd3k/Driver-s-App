@@ -184,6 +184,28 @@ def test_reservation_create_view(client, reservation, driver, parking_place, par
 
 
 @pytest.mark.django_db
+def test_reservation_detail_view(client, reservation):
+    url = reverse('detail_reservation', args=(reservation.id,))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_reservation_update_view(client, reservation, driver, parking_place):
+    dct = {
+        'from_day': '2022-03-11',
+        'from_hour': '22:00',
+        'to_day': '2035-03-11',
+        'to_hour': '00:00',
+        'driver': driver.id,
+        'parking_place': parking_place.id
+    }
+    url = reverse('update_reservation', args=(reservation.id,))
+    response = client.post(url, dct)
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
 def test_reservation_delete_view(client, reservation):
     url = reverse('delete_reservation', args=(reservation.id,))
     response = client.get(url)

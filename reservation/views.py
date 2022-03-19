@@ -129,6 +129,7 @@ class UpdateParking(LoginRequiredMixin, UpdateView):
     model = Parking
     form_class = ParkingModelForm
     template_name = 'form.html'
+    success_url = reverse_lazy('reservations')
 
 
 class DeleteParking(LoginRequiredMixin, DeleteView):
@@ -206,6 +207,12 @@ class AddParkingReservation(LoginRequiredMixin, View):
 class DetailsReservation(DetailView):
     model = ParkingReservation
     template_name = 'reservation_details.html'
+
+
+class UpdateReservation(LoginRequiredMixin, UpdateView):
+    model = ParkingReservation
+    form_class = ReservationModelForm
+    template_name = 'form.html'
 
 
 class ReservationsList(View):

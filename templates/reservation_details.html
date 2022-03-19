@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <p>Start: {{ object.from_day }}: {{ object.from_hour }}</p>
+    <p>Finish: {{ object.to_day }}: {{ object.to_hour }}</p>
+    <p>Driver: {{ object.driver }}</p>
+    <p>Place: {{ object.parking_place }}</p>
+
+    <a href="{{ object.get_absolute_url }}update" {{ object }}>Extend your booking</a>
+
+{% endblock %}
