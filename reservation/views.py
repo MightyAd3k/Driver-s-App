@@ -203,6 +203,11 @@ class AddParkingReservation(LoginRequiredMixin, View):
         return render(request, 'form.html', context)
 
 
+class DetailsReservation(DetailView):
+    model = ParkingReservation
+    template_name = 'reservation_details.html'
+
+
 class ReservationsList(View):
     """
     Displays all the reservations sorted by the day when the booking begins.

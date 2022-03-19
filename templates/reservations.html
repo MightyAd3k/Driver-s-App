@@ -22,7 +22,7 @@
             <tr>
                 <td>{{ object.from_day }}</td>
                 <td>{{ object.from_hour }}</td>
-                <td>{{ object.to_day }}</td>
+                <td><a href="{{ object.get_absolute_url }}">{{ object.to_day }}</a></td>
                 <td>{{ object.to_hour }}</td>
                 <td>{{ object.driver }}</td>
                 <td>{{ object.parking_place }}</td>
