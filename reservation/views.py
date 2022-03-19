@@ -22,7 +22,6 @@ class Index(View):
         return render(request, 'base.html')
 
 
-# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class AddDriver(LoginRequiredMixin, CreateView):
     model = Driver
     form_class = DriverModelForm
@@ -48,6 +47,10 @@ class DeleteDriver(LoginRequiredMixin, DeleteView):
 
 
 class DriversList(View):
+    """
+    Displays all drivers sorted by their nationalities. Allows also to select all drivers of a specific nationality
+    and display them.
+    """
     @staticmethod
     def get(request):
         nationality = request.GET.get('nationality')
@@ -73,7 +76,6 @@ class DriversList(View):
         return render(request, 'drivers1.html', context)
 
 
-# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class AddVehicle(LoginRequiredMixin, CreateView):
     model = Vehicle
     form_class = VehicleModelForm
@@ -99,6 +101,9 @@ class DeleteVehicle(LoginRequiredMixin, DeleteView):
 
 
 class VehiclesList(View):
+    """
+    Displays all the vehicles.
+    """
     @staticmethod
     def get(request):
         vehicles = Vehicle.objects.all()
@@ -108,7 +113,6 @@ class VehiclesList(View):
         return render(request, 'vehicles.html', context)
 
 
-# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class AddParking(LoginRequiredMixin, CreateView):
     model = Parking
     form_class = ParkingModelForm
@@ -134,9 +138,12 @@ class DeleteParking(LoginRequiredMixin, DeleteView):
 
 
 class ParkingsList(View):
+    """
+    Displays all the parkings sorted by their types.
+    """
     @staticmethod
     def get(request):
-        parkings = Parking.objects.all()
+        parkings = Parking.objects.all().order_by('type')
         context = {
             'parkings': parkings,
             'type': parking_types
@@ -144,14 +151,23 @@ class ParkingsList(View):
         return render(request, 'parkings.html', context)
 
 
-# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 def get_first_parking_place(parking):
+    """
+    Returns the first parking place in a specyfic parkking lot.
+
+    :param parking:
+    :return first free parking space which 'is_free' value is True:
+    """
     parking_place = ParkingPlace.objects.filter(is_free=True, parking=parking)
 
     return parking_place.first()
 
 
 class AddParkingReservation(LoginRequiredMixin, View):
+    """
+    Allows to add a new parking place reservation. Using 'get_first_parking_place' function.
+    Turns the 'is_free' value to False.
+    """
     @staticmethod
     def get(request, parking_id):
         form = ReservationModelForm()
@@ -188,6 +204,9 @@ class AddParkingReservation(LoginRequiredMixin, View):
 
 
 class ReservationsList(View):
+    """
+    Displays all the reservations sorted by the day when the booking begins.
+    """
     @staticmethod
     def get(request):
         reservations = ParkingReservation.objects.all().order_by('from_day')
@@ -198,6 +217,9 @@ class ReservationsList(View):
 
 
 class DeleteReservation(View):
+    """
+    Allows to delete a specific reservation from db, turns the 'is_free' value back to True.
+    """
     @staticmethod
     def get(request, reservation_id):
         reservation = ParkingReservation.objects.get(id=reservation_id)
