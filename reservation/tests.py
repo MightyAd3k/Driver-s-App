@@ -20,6 +20,22 @@ def test_driver_create_view(client, driver):
 
 
 @pytest.mark.django_db
+def test_driver_create_without_login(client):
+    url = reverse('add_driver')
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('login'))
+
+
+@pytest.mark.django_db
+def test_driver_create_with_forced_login(client, new_user):
+    url = reverse('add_driver')
+    client.force_login(new_user)
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_driver_detail_view(client, driver):
     url = reverse('detail_driver', args=(driver.id,))
     response = client.get(url)
@@ -40,11 +56,42 @@ def test_driver_update_view(client, driver):
 
 
 @pytest.mark.django_db
+def test_driver_update_without_login(client, driver):
+    url = reverse('update_driver', args=(driver.id,))
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('login'))
+
+
+@pytest.mark.django_db
+def test_driver_update_with_forced_login(client, new_user, driver):
+    url = reverse('update_driver', args=(driver.id,))
+    client.force_login(new_user)
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_driver_delete_view(client, driver):
     url = reverse('delete_driver', args=(driver.id,))
     response = client.get(url)
     assert response.status_code == 302
 
+
+@pytest.mark.django_db
+def test_driver_delete_without_login(client, driver):
+    url = reverse('delete_driver', args=(driver.id,))
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('login'))
+
+
+@pytest.mark.django_db
+def test_driver_delete_with_forced_login(client, new_user, driver):
+    url = reverse('delete_driver', args=(driver.id,))
+    client.force_login(new_user)
+    response = client.get(url)
+    assert response.status_code == 200
 
 @pytest.mark.django_db
 def test_drivers_list_view(client, drivers):
