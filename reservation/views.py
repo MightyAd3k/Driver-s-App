@@ -184,7 +184,7 @@ class AddParkingReservation(LoginRequiredMixin, View):
         parking = Parking.objects.get(id=parking_id)
 
         if parking.free_places < 1:
-            return HttpResponse("We're sorry, there is no more free places available.")
+            return HttpResponse("We're sorry, there are no more places available.")
 
         if form.is_valid():
             reservation = form.save(commit=False)

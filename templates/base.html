@@ -30,6 +30,12 @@
         <a href="{% url 'logout' %}">Logout</a>
     {% endif %}
 
+    {% if user.is_superuser %}
+        <p id="superuser">Logged as {{ user }}</p>
+    {% else %}
+        <p id="user">Logged as {{ user }}</p>
+    {% endif %}
+
 </div>
 <div class="contener">
     {% block content %}
@@ -50,7 +56,7 @@
 </div>
 <div class="footer">
     <p>{{ date }}</p>
-    <p>Created by:<a href="https://github.com/MightyAd3k">Adrian Drewniak</a>, junior python developer.</p>
+    <p>Created by: <a href="https://github.com/MightyAd3k">Adrian Drewniak</a>, junior python developer.</p>
 </div>
 </body>
 </html>

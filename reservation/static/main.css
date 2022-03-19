@@ -60,3 +60,19 @@ a {
 #promyczek {
     text-align: center
 }
+
+#superuser {
+    float: right;
+    color: deeppink;
+    margin-right: 15px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#user {
+    float: right;
+    color: deeppink;
+    margin-right: 15px;
+    font-size: 15px;
+    font-weight: bold;
+}
